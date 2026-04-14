@@ -92,8 +92,7 @@ df = load_data()
 # ── Header ────────────────────────────────────────────────────────────────────
 st.title(" Market Sentiment & Panic Index Dashboard")
 st.markdown(
-    "A composite **Panic Index** (VIX + Fear & Greed) to identify "
-    "buy/sell opportunities in tech and semiconductor ETFs."
+    "Exploring Market Asymmetry: Can a Composite Panic Index (VIX + CNN Fear & Greed) Identify Tactical Entry and Exit Opportunities Across Major Indices and the Semiconductor Sector (2021–2026)?"
 )
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
@@ -405,12 +404,8 @@ if not dff.empty:
 # ── Write-up ──────────────────────────────────────────────────────────────────
 with st.expander("📝 Project Write-up", expanded=False):
     st.markdown(f"""
-## Research Question
-**Can a composite panic indicator combining VIX and CNN Fear & Greed Index
-identify actionable buy and sell opportunities in tech/semiconductor ETFs
-across a full market cycle (2021–2026)?**
 
----
+
 
 ## Key Findings
 
@@ -451,7 +446,7 @@ across a full market cycle (2021–2026)?**
   sell signal is less reliable in sustained uptrends.
 - **The Panic Index is asymmetric: buy signals are validated, sell signals are not.**
 
-
+---
 
 ## Design Decisions
 - **Four-chart layout**: Each chart serves a distinct analytical purpose:
