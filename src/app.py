@@ -271,77 +271,76 @@ st.divider()
 
 # ── Chart 3: Scatter Plot ──────────────────────────────────────────────────────────────
 
-col_left, col_right = st.columns([1, 1])
-with col_left:
-    st.subheader("🔍 Sentiment vs. MA50 Deviation")
-    st.caption("Each dot = one trading day · Color & size = VIX · "
-            "Bottom-left = panic bottom (best historical entry points)")
 
-    vix_min = float(dff['vix'].min())
-    vix_max = float(dff['vix'].max())
+st.subheader("🔍 Sentiment vs. MA50 Deviation")
+st.caption("Each dot = one trading day · Color & size = VIX · "
+        "Bottom-left = panic bottom (best historical entry points)")
 
-    fig_sc = go.Figure(go.Scatter(
-        x=dff['fear_greed_index'],
-        y=dff['price_dev_pct'],
-        mode='markers',
-        marker=dict(
-            color=dff['vix'],
-            line=dict(width=0.5, color='DarkSlateGrey'),
-            colorscale='RdYlGn_r',
-            cmin=vix_min, cmax=vix_max,
-            size=dff['vix'].apply(
-                lambda x: 6 + (x - vix_min) / max(vix_max - vix_min, 1) * 14
-            ),
-            showscale=True,
-            colorbar=dict(title="VIX")
+vix_min = float(dff['vix'].min())
+vix_max = float(dff['vix'].max())
+
+fig_sc = go.Figure(go.Scatter(
+    x=dff['fear_greed_index'],
+    y=dff['price_dev_pct'],
+    mode='markers',
+    marker=dict(
+    color=dff['vix'],
+        line=dict(width=0.5, color='DarkSlateGrey'),
+        colorscale='RdYlGn_r',
+        cmin=vix_min, cmax=vix_max,
+        size=dff['vix'].apply(
+            lambda x: 6 + (x - vix_min) / max(vix_max - vix_min, 1) * 14
         ),
-        text=dff['date_dt'].dt.strftime('%b %d, %Y'),
-        customdata=dff['vix'],
-        hovertemplate=(
-            "Date: %{text}<br>"
-            "Fear & Greed: %{x:.1f}<br>"
-            "Price Dev from MA50: %{y:.2f}%<br>"
-            "VIX: %{customdata:.2f}"
-            "<extra></extra>"
-        )
-    ))
-    fig_sc.update_layout(
-        xaxis_title="Fear & Greed Index  (0 = Extreme Fear  →  100 = Extreme Greed)",
-        yaxis_title=f"{selected_label} Deviation from MA50 (%)",
-        template="plotly_white", height=430,
-        margin=dict(t=20, b=60, l=60, r=40),
-        shapes=[dict(type='line', y0=0, y1=0, x0=0, x1=100,
-                    line=dict(color='gray', dash='dash'))]
+        showscale=True,
+        colorbar=dict(title="VIX")
+    ),
+    text=dff['date_dt'].dt.strftime('%b %d, %Y'),
+    customdata=dff['vix'],
+    hovertemplate=(
+        "Date: %{text}<br>"
+        "Fear & Greed: %{x:.1f}<br>"
+        "Price Dev from MA50: %{y:.2f}%<br>"
+        "VIX: %{customdata:.2f}"
+        "<extra></extra>"
     )
-    st.plotly_chart(fig_sc, use_container_width=True, key="scatter_chart")
-
+))
+fig_sc.update_layout(
+    xaxis_title="Fear & Greed Index  (0 = Extreme Fear  →  100 = Extreme Greed)",
+    yaxis_title=f"{selected_label} Deviation from MA50 (%)",
+    template="plotly_white", height=430,
+    margin=dict(t=20, b=60, l=60, r=40),
+    shapes=[dict(type='line', y0=0, y1=0, x0=0, x1=100,
+                line=dict(color='gray', dash='dash'))]
+)
+st.plotly_chart(fig_sc, use_container_width=True, key="scatter_chart")
+st.divider()
 
 
 # ── Chart 4: Backtest ─────────────────────────────────────────────────────────
-with col_right:
-    st.subheader("⚖️ Strategy vs Buy & Hold — Backtest")
-    st.caption(
-        f"Position sizing: {int(pos_initial)}% initial · "
-        f"+{int(add_amount)}% on buy signal (max {int(pos_max)}%) · "
-        f"-{int(reduce_amount)}% on sell signal (min {int(pos_min)}%)"
-    )
 
-    fig_bt = go.Figure()
-    fig_bt.add_trace(go.Scatter(x=bt['date_dt'], y=bt['cumulative_strategy'],
-                                name="Panic Index Strategy",
-                                line=dict(color='#EF553B', width=2)))
-    fig_bt.add_trace(go.Scatter(x=bt['date_dt'], y=bt['cumulative_buyhold'],
-                                name="Buy & Hold",
-                                line=dict(color='black', width=2, dash='dot')))
-    fig_bt.update_layout(
-        height=380, hovermode="x unified", template="plotly_white",
-        legend=dict(orientation="h", y=1.02, x=1, xanchor="right"),
-        margin=dict(t=40, b=40, l=60, r=40),
-        yaxis_title="Cumulative Return (base = 100)"
-    )
-    fig_bt.update_xaxes(tickformat="%b %Y", nticks=15, tickangle=45,
-                        hoverformat="%b %d, %Y")
-    st.plotly_chart(fig_bt, use_container_width=True, key="backtest_chart")
+st.subheader("⚖️ Strategy vs Buy & Hold — Backtest")
+st.caption(
+    f"Position sizing: {int(pos_initial)}% initial · "
+    f"+{int(add_amount)}% on buy signal (max {int(pos_max)}%) · "
+    f"-{int(reduce_amount)}% on sell signal (min {int(pos_min)}%)"
+)
+
+fig_bt = go.Figure()
+fig_bt.add_trace(go.Scatter(x=bt['date_dt'], y=bt['cumulative_strategy'],
+                            name="Panic Index Strategy",
+                            line=dict(color='#EF553B', width=2)))
+fig_bt.add_trace(go.Scatter(x=bt['date_dt'], y=bt['cumulative_buyhold'],
+                            name="Buy & Hold",
+                            line=dict(color='black', width=2, dash='dot')))
+fig_bt.update_layout(
+    height=380, hovermode="x unified", template="plotly_white",
+    legend=dict(orientation="h", y=1.02, x=1, xanchor="right"),
+    margin=dict(t=40, b=40, l=60, r=40),
+    yaxis_title="Cumulative Return (base = 100)"
+)
+fig_bt.update_xaxes(tickformat="%b %Y", nticks=15, tickangle=45,
+                    hoverformat="%b %d, %Y")
+st.plotly_chart(fig_bt, use_container_width=True, key="backtest_chart")
 
 
 st.divider()
@@ -455,10 +454,16 @@ across a full market cycle (2021–2026)?**
 
 
 ## Design Decisions
-- **Two-column layout (Chart 2 + 3)**: Scatter plot and backtest are
-  placed side-by-side as they answer complementary questions — the scatter
-  plot shows the historical relationship between sentiment and price level,
-  while the backtest quantifies the trading outcome of acting on those signals.
+- **Four-chart layout**: Each chart serves a distinct analytical purpose:
+  - **Chart 1 (Price Signal Map & Composite Panic Index)**: Shows *where* buy/sell signals appear on the
+    price chart, allowing users to visually validate signal timing against
+    historical price movements.
+  - **Chart 2 (Sentiment vs. MA50 Deviation)**: Reveals the *structural relationship*
+    between sentiment and price level, removing long-term trend bias via MA50 deviation.
+  - **Chart 3 (Backtest)**: Quantifies *whether acting on signals generates returns*,
+    comparing the strategy against passive Buy & Hold.
+  - **Chart 4 (Forward Return Analysis)**: Statistically validates signal effectiveness
+    across multiple time horizons, providing evidence beyond visual pattern recognition.
 
 - **Composite Panic Index**: Normalized VIX (50%) + Inverted Fear & Greed (50%),
   scaled to 0–100. Buy threshold (>{BUY_THRESHOLD}) = 95th percentile;
