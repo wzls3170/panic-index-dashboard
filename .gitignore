@@ -1,0 +1,23 @@
+# 忽略所有 Python 缓存
+__pycache__/
+*.pyc
+
+# 忽略 Streamlit 本地配置
+.streamlit/
+
+# 忽略虚拟环境
+venv/
+.env
+
+# 忽略系统文件
+.DS_Store
+
+# 数据文件管理：
+# 1. 先忽略 data 文件夹下的所有内容
+data/*
+
+# 2. 唯独不要忽略 market_data_5.csv
+!data/market_data_5.csv
+
+# 忽略其他特定文件（可选）
+data/Untitled-1.html
