@@ -445,7 +445,7 @@ across a full market cycle (2021–2026)?**
 
 ### Forward Return Analysis:
 - Extreme panic signals generate positive returns over 1-week to 3-month
-  horizons with win rates of 64–74%, confirming the ["buy the panic"](https://www.investopedia.com/terms/p/panicbuying.asp) hypothesis.
+  horizons with win rates of 64–74%, confirming the ["buy the panic hypothesis"](https://www.investopedia.com/terms/p/panicbuying.asp) .
 - Extreme greed signals do NOT reliably predict subsequent declines — prices
   continued rising after greed signals during this bull market, indicating the
   sell signal is less reliable in sustained uptrends.
